@@ -1,4 +1,5 @@
-const fs=require('fs')
+// File System
+import fs from 'fs'
 
 class ProductManager{
 
@@ -12,37 +13,24 @@ class ProductManager{
       if(fs.existsSync(this.path)){
         let data= await fs.promises.readFile(this.path,'utf-8')
         let parseData=JSON.parse(data)
+
         return parseData
+
       }else{
-        await fs.promises.writeFile(this.path,'[]')
-        return []
+        return await fs.promises.writeFile(this.path,'[]')
       }
-    }catch (error) {
-      console.log(`Cannot read the file: --- ${error} ---`)
-    }
+    }catch (error) {console.log(`Cannot read the file: --- ${error} ---`)}
   }
 
   addProduct= async (product)=>{
     try {
-      const{title,description,price,thumbnail,code,stock}=product
       let data= await this.getProducts()
-      let pCode= data.find((element)=> element.code==code)
+      product.id=this.ID++
+      data.push(product)
 
-      if(pCode){
-        return console.log('Error: Product with repeated code')
+      return await fs.promises.writeFile(this.path,JSON.stringify(data,null,'\t'));
 
-      }else if(title&&description&&price&&thumbnail&&code&&stock){
-        product.id=this.ID++
-        data.push(product)
-        return await fs.promises.writeFile(this.path,JSON.stringify(data,null,'\t'));
-
-      }else{
-        console.log('Error: Missing enter fields')
-      }
-
-    }catch (error) {
-      console.log(`Cannot write the file: --- ${error} ---`)
-    }
+    }catch (error) {console.log(`Cannot write the file: --- ${error} ---`)}
   }
   
   async getProductById(id){
@@ -51,10 +39,7 @@ class ProductManager{
       let productID=data.find((product)=>product.id==id)
 
       if(productID){
-        console.log(`Congratulations! Product found`)
-        console.log (productID)
         return productID
-
       }else{
         console.log('Error: Product not found')
       }
@@ -63,19 +48,19 @@ class ProductManager{
       console.log(`There is an error: --- ${error} ---`)
     }
   }
+
   async updateProduct(id,product){
     try {
       let data=await this.getProducts()
-      let newProduct=product
-      newProduct.id=id
-      data[id-1]=newProduct;
+      let indexToUpd= data.findIndex(p=>p.id==id)
+      product.id=id
+      data[indexToUpd]=product;
 
       return await fs.promises.writeFile(this.path,JSON.stringify(data,null,'\t'))
 
-    } catch (error) {
-      console.log(`There is an error: --- ${error} ---`)
-    }
+    } catch (error) {console.log(`There is an error: --- ${error} ---`)}
   }
+  
   deleteProduct=async (id)=>{
     try {
       let data= await this.getProducts()
@@ -84,9 +69,8 @@ class ProductManager{
 
       return await fs.promises.writeFile(this.path,JSON.stringify(data,null,'\t'))
 
-    } catch (error) {
-      console.log(`There is an error: --- ${error} ---`)
-    }
+    } catch (error) {console.log(`There is an error: --- ${error} ---`)}
   }
 }
-module.exports=ProductManager;
+
+export default ProductManager
