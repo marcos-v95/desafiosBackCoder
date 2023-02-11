@@ -1,0 +1,13 @@
+[
+	{
+		"title": "Camisa",
+		"description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus iusto minus vero, magnam iste voluptate",
+		"code": "4444",
+		"price": 2000,
+		"stock": 3,
+		"category": "clothes",
+		"thumbnail": "https://rutadeimagen.com/",
+		"status": true,
+		"id": 1
+	}
+]

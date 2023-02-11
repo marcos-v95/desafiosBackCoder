@@ -17,7 +17,8 @@ class ProductManager{
         return parseData
 
       }else{
-        return await fs.promises.writeFile(this.path,'[]')
+        await fs.promises.writeFile(this.path,'[]')
+        return []
       }
     }catch (error) {console.log(`Cannot read the file: --- ${error} ---`)}
   }
@@ -60,7 +61,7 @@ class ProductManager{
 
     } catch (error) {console.log(`There is an error: --- ${error} ---`)}
   }
-  
+
   deleteProduct=async (id)=>{
     try {
       let data= await this.getProducts()
