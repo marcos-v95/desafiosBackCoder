@@ -1,0 +1,17 @@
+{{#if hasProducts}}
+  {{#each products}}
+    <div style="display: flex;justify-content:space-around">
+      <p>Nombre del producto: {{this.title}}</p>
+      <p>Precio: {{this.price}}</p>
+      <p>Stock disponible: {{this.stock}}</p>
+      <p>Id de producto: {{this.id}}</p>
+    </div>
+  {{/each}}
+{{else}}
+  <div style="display: flex;justify-content:center">
+    <h4>No hay productos disponibles</h1>
+  </div>
+{{/if}}
+  <div style="display: flex;justify-content:center">
+    <button type="button" onclick="location.href='/realtimeproducts'">Volver al formulario</button>
+  </div>

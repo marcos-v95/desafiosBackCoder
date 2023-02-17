@@ -28,9 +28,8 @@ class ProductManager{
       let data= await this.getProducts()
       product.id=this.ID++
       data.push(product)
-
-      return await fs.promises.writeFile(this.path,JSON.stringify(data,null,'\t'));
-
+      await fs.promises.writeFile(this.path,JSON.stringify(data,null,'\t'));
+      return data
     }catch (error) {console.log(`Cannot write the file: --- ${error} ---`)}
   }
   

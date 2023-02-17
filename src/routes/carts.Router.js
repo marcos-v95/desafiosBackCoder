@@ -1,7 +1,7 @@
 // Router
 import { Router } from "express";
 // Manager (FS)
-import ProductManager from "../manager/productManager.js";
+import ProductManager from "../modules/productManager.js";
 // Routes
 const router= Router() // /api/carts
 // Manager

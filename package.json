@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Repositorio creado para resolver los desafios del curso de backend de Coderhouse",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/app.js",
@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/marcos-v95/desafiosBackCoder#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.7",
+    "socket.io": "^4.6.0"
   }
 }

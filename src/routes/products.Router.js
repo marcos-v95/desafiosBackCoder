@@ -1,10 +1,11 @@
 // Router
 import { Router } from "express";
 // Manager (FS)
-import ProductManager from "../manager/productManager.js";
-
+import ProductManager from "../modules/productManager.js";
 // Routes
 const router= Router() // /api/products
+// Socket io
+import {io} from "../app.js";
 // Manager
 const manager= new ProductManager('./src/files/productsData.json')
 
@@ -55,7 +56,11 @@ router.post('/', async (req,res)=>{
 
     }else if(title&&description&&code&&price&&stock&&category){
       newProduct.status=true
+      newProduct.thumbnail=[]
+      
       let result= await manager.addProduct(newProduct)
+      
+      io.emit('product',result)
 
       return res.status(200).send({status:'success',payload:result})
     }else{
