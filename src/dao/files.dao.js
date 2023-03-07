@@ -10,7 +10,7 @@ class ProductManager{
 
   async getProducts(){
     try {
-      if(fs.existsSync(this.path)){
+      if(fs.existsSync (this.path)){
         let data= await fs.promises.readFile(this.path,'utf-8')
         let parseData=JSON.parse(data)
 
@@ -23,7 +23,7 @@ class ProductManager{
     }catch (error) {console.log(`Cannot read the file: --- ${error} ---`)}
   }
 
-  addProduct= async (product)=>{
+  async addProduct(product){
     try {
       let data= await this.getProducts()
       product.id=this.ID++

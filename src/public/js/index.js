@@ -1,35 +1,35 @@
-const socket= io() 
+// Socket Server
+const socket=io()
 
-let form=document.getElementById('form')
+// Chat Box
+let user
+let chatBox=document.getElementById('chatBox')
 
-const handleSubmit=(event,form)=>{
-  event.preventDefault()
-  let formData= new FormData(form)
-  let obj={};
-  formData.forEach((value,key)=>obj[key]=value)
+Swal.fire({
+  title:'Bienvenido/a',
+  input:'text',
+  text:'Porfavor, ingrese su email',
+  inputValidator:(value)=> !value && 'Necesitas escribir un email para continuar',
+  allowOutsideClick:false
+}).then( result=> {
+  user=result.value
+})
 
-  fetch('/api/products',{
-    method:"POST",
-    body:JSON.stringify(obj),
-    headers:{
-      "Content-Type":"application/json"
+chatBox.addEventListener('keyup',event=>{
+  if(event.key==='Enter'){
+    if(chatBox.value.trim().length>0){
+      socket.emit('message',{user:user,message:chatBox.value})
+      chatBox.value=''
     }
+  }
+})
+
+// Socket Listeners
+socket.on('messagesLogs', data=>{
+  let log=document.getElementById('messagesLogs')
+  let messages='';
+  data.forEach((msg)=>{
+    messages= messages + `usuario: ${msg.user} dice: ${msg.message}</br>`
   })
-  
-  
-}
-form.addEventListener('submit',(e)=>handleSubmit(e,e.target)) 
-socket.on('product',(data)=>{
-  
-  let prod=document.getElementById('prodsAdded')
-  let card=new String()
-  data.forEach((p) =>{
-    card=`${card}
-      <div style="display: flex;justify-content:space-evenly">
-        <p>Producto agregado: ${p.title}</p>
-        <p>Precio de producto: ${p.price}</p>
-        <p>Cantidad agregada: ${p.stock}</p>
-      </div>`
-  })
-  prod.innerHTML=card
+  log.innerHTML=messages;
 })
