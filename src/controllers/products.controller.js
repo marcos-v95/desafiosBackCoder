@@ -8,7 +8,7 @@ import {
 
 
 const getProducts= async (req,res)=>{
-  let products= await getProductsService()
+  let products= await getProductsService(req.query.limit, req.query.page ,req.query.sort ,req.query.category, req.query.status)
 
   res.send(products)
 }
