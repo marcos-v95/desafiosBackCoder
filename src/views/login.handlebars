@@ -1,0 +1,16 @@
+
+<div>
+  <h1>Inicio de sesion</h1>
+  <form id="login" action="api/sessions/login" method="POST">
+    <div>
+      <label for="email">Email</label>
+      <input id="email" type="text" name="email" required>
+    </div>
+    <div>
+      <label for="password">Contraseña</label>
+      <input id="password" type="text" name="password" >
+    </div>
+    <button type="submit">Enviar</button>
+    <button type="button" onclick=location.href='/register'>Registrate!</button>
+  </form>
+</div>

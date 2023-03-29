@@ -10,7 +10,6 @@ mongoose.connect('mongodb+srv://marcos95:ecommerce1234@ecommerce.llqcwcl.mongodb
 export default class MongoDBContainer{
   constructor(collection,schema){
     this.model= mongoose.model(collection,schema)
-    // this.numberID=1
   }
 
   async getData (limit,page,sort,category,status){
@@ -48,7 +47,6 @@ export default class MongoDBContainer{
   }
   async saveData (document){
     try {
-      // document.id=this.numberID++;
       let result= await this.model.create(document)
       return result
 
