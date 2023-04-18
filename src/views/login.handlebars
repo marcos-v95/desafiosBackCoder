@@ -1,16 +1,15 @@
-
-<div>
-  <h1>Inicio de sesion</h1>
-  <form id="login" action="api/sessions/login" method="POST">
-    <div>
-      <label for="email">Email</label>
-      <input id="email" type="text" name="email" required>
-    </div>
-    <div>
-      <label for="password">Contraseña</label>
-      <input id="password" type="text" name="password" >
-    </div>
-    <button type="submit">Enviar</button>
-    <button type="button" onclick=location.href='/register'>Registrate!</button>
-  </form>
-</div>
+{{#if exists}}
+  <h3 style="text-transform: capitalize;">Bienvenido! {{user.first_name}}</h3>
+  <div>
+    <h4>Tus datos de perfil son:</h4>
+      <p>Nombre completo: {{user.first_name}} {{user.last_name}}</p>
+      <p>Edad: {{user.age}} años</p>
+      <p>Email:{{user.email}}</p>
+      <button type="button" onclick=location.href="/logout">Cerrar sesion</button>
+  </div>
+  
+  {{else}}
+    <h3>Usuario o contraseña incorrectos!</h3>
+    <button type="button" onclick=location.href='/'>Ir al Login</button>
+    <button type="button" onclick=location.href='/register'>Ir a registro</button>
+{{/if}}

@@ -1,5 +1,5 @@
 // Services
-import { 
+import {
   getCartService,
   createCartService,
   addProductinCartService,
@@ -11,38 +11,39 @@ import {
 
 // Controllers
 
-const getCart= async (req,res)=>{
-  let cart= await getCartService (req.params.cid)
+const getCart = async (req, res) => {
+  let cart = await getCartService(req.params.cid)
   res.send(cart)
 }
 
-const createCart= async (req,res)=>{
-  let result= await createCartService({products:[]})
+const createCart = async (req, res) => {
+  let cart = { products: [] }
+  let result = await createCartService(cart)
   res.send(result)
 }
 
-const addProductinCart= async (req,res)=>{
-  let result= await addProductinCartService(req.params.cid, req.params.pid)
+const addProductinCart = async (req, res) => {
+  let result = await addProductinCartService(req.params.cid, req.params.pid)
   res.send(result)
 }
 
-const deleteProductinCart= async (req,res)=>{
-  let result= await deleteProductinCartService(req.params.cid, req.params.pid)
+const deleteProductinCart = async (req, res) => {
+  let result = await deleteProductinCartService(req.params.cid, req.params.pid)
   res.send(result)
 }
 
-const cleanCart= async (req,res)=>{
-  let result= await cleanCartService(req.params.cid)
+const cleanCart = async (req, res) => {
+  let result = await cleanCartService(req.params.cid)
   res.send(result)
 }
 
-const updateCart= async (req,res)=>{
-  let result= await updateCartService(req.params.cid,req.body)
+const updateCart = async (req, res) => {
+  let result = await updateCartService(req.params.cid, req.body)
   res.send(result)
 }
 
-const updateProductinCart= async (req,res)=>{
-  let result= await updateProductinCartService(req.params.cid, req.params.pid, req.body)
+const updateProductinCart = async (req, res) => {
+  let result = await updateProductinCartService(req.params.cid, req.params.pid, req.body)
   res.send(result)
 }
 

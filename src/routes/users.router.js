@@ -1,16 +1,23 @@
 import { Router } from "express";
+import passport from "passport";
 
 // Controllers
 import {
   userRegister,
-  userLogin
+  userLogin,
+  userLoginGithub,
+  githubCallback
 } from "../controllers/users.controller.js"
 
-const router= Router();
+const router = Router();
 
 
-router.post('/register', userRegister)
+router.post('/register', passport.authenticate('register'), userRegister)
 
-router.post('/login', userLogin)
+router.post('/login', passport.authenticate('login'), userLogin)
 
-export default router
+router.get('/github', passport.authenticate('github', { scope: ['user:email'] }), userLoginGithub)
+
+router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/' }), githubCallback)
+
+export default router 
