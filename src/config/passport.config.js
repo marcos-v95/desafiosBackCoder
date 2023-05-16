@@ -1,6 +1,7 @@
 import passport from "passport";
 import local from "passport-local"
 import githubStrategy from "passport-github2"
+import jwt from 'passport-jwt'
 
 import { usersDao } from "../services/user.service.js";
 import { createHash, isValidPassword } from "../utils.js";
@@ -28,10 +29,10 @@ const initializePassport = () => {
   }))
 
   passport.use('login', new localStategy({ usernameField: 'email' }, async (email, password, done) => {
-    const user = await usersDao.model.findOne({ email: email })
+    let user = await usersDao.model.findOne({ email: email })
 
     try {
-      if (!email || !password) return { status: 'error', message: 'All fields are required' }
+      if (!email || !password) return done(null, false, { status: 'error', message: 'All fields are required' })
       if (!user) return done(null, false, { status: 'error', message: 'User not found, please register' })
       if (!isValidPassword(user, password)) return done(null, false, { status: 'error', message: 'Incorrect password' })
 
@@ -71,7 +72,26 @@ const initializePassport = () => {
       return done(error)
     }
   }))
+  // Strategy used to extract the token from a cookie with jwt
+  const cookieExtractor = (req) => {
+    let token = null;
+    if (req && req.cookies) { token = req.cookies['loginToken'] }
 
+    return token
+  }
+  passport.use('jwt', new jwt.Strategy({
+    jwtFromRequest: jwt.ExtractJwt.fromExtractors([cookieExtractor]),
+    secretOrKey: 'loginKey'
+  }, async (jwt_payload, done) => {
+    try {
+      return done(null, jwt_payload)
+    } catch (error) {
+
+      return done(error)
+    }
+  }))
+
+  // Serializer and Deserializer
   passport.serializeUser((user, done) => {
     done(null, user._id)
   })
