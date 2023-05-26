@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+const usersCollection = 'users';
+
 const usersSchema = mongoose.Schema({
   first_name: { type: String, required: true, maxLength: 30 },
   last_name: { type: String, required: true, maxLength: 30 },
@@ -10,4 +12,4 @@ const usersSchema = mongoose.Schema({
   role: { type: String, default: 'user' },
 }, { timestamps: true })
 
-export default usersSchema 
+export default mongoose.model(usersCollection, usersSchema)

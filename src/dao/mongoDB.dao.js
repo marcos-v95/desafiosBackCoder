@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import config from "../config/dotenv.config.js";
 
-mongoose.connect('mongodb+srv://marcos95:ecommerce1234@ecommerce.llqcwcl.mongodb.net/?retryWrites=true&w=majority', error => {
+mongoose.connect(config.MONGO_URL, (error) => {
   if (error) {
     console.log('Cannot connect to db')
     process.exit()
@@ -8,8 +9,8 @@ mongoose.connect('mongodb+srv://marcos95:ecommerce1234@ecommerce.llqcwcl.mongodb
 })
 
 export default class MongoDBContainer {
-  constructor(collection, schema) {
-    this.model = mongoose.model(collection, schema)
+  constructor(model) {
+    this.model = model
   }
 
   async getData(query, options) {

@@ -1,21 +1,19 @@
 import MongoDBContainer from "../dao/mongoDB.dao.js";
-import usersSchema from "../dao/models/users.model.js";
+import usersModel from "../models/users.model.js";
 
 
-export const usersDao = new MongoDBContainer('users', usersSchema) // exported for passport config
+export default class UserServices {
+  constructor() {
+    this.dao = new MongoDBContainer(usersModel)
+  }
 
-const userRegisterService = async (user) => {
+  async userRegisterService(user) {
 
-  return { status: 'success', payload: user }
-}
+    return { status: 'success', payload: user }
+  }
 
-const userLoginService = async (user) => {
+  async userLoginService(user) {
 
-  return { status: 'success', payload: user }
-}
-
-
-export {
-  userRegisterService,
-  userLoginService
+    return { status: 'success', payload: user }
+  }
 }

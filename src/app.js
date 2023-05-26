@@ -1,10 +1,7 @@
 import express from "express";
 import handlebars from 'express-handlebars'
 import __dirname from './utils.js';
-
-// Session
-// import session from "express-session";
-// import MongoStore from "connect-mongo";
+import config from "./config/dotenv.config.js";
 
 // Passport
 import passport from "passport";
@@ -21,8 +18,8 @@ import viewsRouter from './routes/views.router.js'
 
 // Server
 const app = express()
-const PORT = process.env.PORT || 8080;
-const server = app.listen(PORT, () => { console.log(`Server running on PORT: ${server.address().port}`) })
+
+const server = app.listen(config.PORT, () => { console.log(`Server running on PORT: ${server.address().port}`) })
 server.on('error', (error) => console.log(error))
 
 // Express config
@@ -30,22 +27,9 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-// // Session config
-// app.use(session({
-//   store: MongoStore.create({  // database storage
-//     mongoUrl: 'mongodb+srv://marcos95:ecommerce1234@ecommerce.llqcwcl.mongodb.net/?retryWrites=true&w=majority',
-//     mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-//     ttl: 150
-//   }),
-//   secret: "SecretforMySession",
-//   resave: false,
-//   saveUninitialized: false
-// }))
-
 // Passport config
 initializePassport()
 app.use(passport.initialize())
-// app.use(passport.session())
 
 // Cookies
 app.use(cookieParser('secretKey'))

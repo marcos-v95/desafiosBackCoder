@@ -3,13 +3,14 @@ import local from "passport-local"
 import githubStrategy from "passport-github2"
 import jwt from 'passport-jwt'
 
-import { usersDao } from "../services/user.service.js";
 import { createHash, isValidPassword } from "../utils.js";
 
-const localStategy = local.Strategy;
+import UserServices from "../services/user.service.js";
+const services = new UserServices()
+
 
 const initializePassport = () => {
-  passport.use('register', new localStategy({ passReqToCallback: true, usernameField: 'email' }, async (req, email, password, done) => {
+  passport.use('register', new local.Strategy({ passReqToCallback: true, usernameField: 'email' }, async (req, email, password, done) => {
     try {
       const { first_name, last_name, age } = req.body;
       if (!first_name || !last_name || !email || !age || !password) return done(null, false, { status: 'error', message: 'All fields are required' })
@@ -17,10 +18,10 @@ const initializePassport = () => {
       let user = { first_name, last_name, email, age, password: createHash(password) }
       if (email == 'adminCoder@coder.com' && password == 'adminCoder123') user.role = 'admin'
 
-      let exist = await usersDao.model.findOne({ email: email })
+      let exist = await services.dao.model.findOne({ email: email })
       if (exist) return done(null, false, { status: 'error', message: 'The user is already registered' })
 
-      let result = await usersDao.saveData(user)
+      let result = await services.dao.saveData(user)
       return done(null, result)
 
     } catch (error) {
@@ -28,8 +29,8 @@ const initializePassport = () => {
     }
   }))
 
-  passport.use('login', new localStategy({ usernameField: 'email' }, async (email, password, done) => {
-    let user = await usersDao.model.findOne({ email: email })
+  passport.use('login', new local.Strategy({ usernameField: 'email' }, async (email, password, done) => {
+    let user = await services.dao.model.findOne({ email: email })
 
     try {
       if (!email || !password) return done(null, false, { status: 'error', message: 'All fields are required' })
@@ -50,7 +51,7 @@ const initializePassport = () => {
     callbackURL: 'http://localhost:8080/api/sessions/githubcallback'
 
   }, async (accessToken, refreshToken, profile, done) => {
-    let user = await usersDao.model.findOne({ email: profile._json.email })
+    let user = await services.dao.model.findOne({ email: profile._json.email })
 
     try {
       if (!user) { // user doesnt exist in database
@@ -62,7 +63,7 @@ const initializePassport = () => {
           password: ' '
         }
 
-        let result = await usersDao.saveData(newUser)
+        let result = await services.saveData(newUser)
         return done(null, result)
 
       } else { // user exists in database
@@ -96,7 +97,7 @@ const initializePassport = () => {
     done(null, user._id)
   })
   passport.deserializeUser(async (id, done) => {
-    let result = await usersDao.model.findOne({ _id: id })
+    let result = await services.dao.model.findOne({ _id: id })
     return done(null, result)
   })
 }

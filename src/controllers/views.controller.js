@@ -1,5 +1,9 @@
-import { cartsDao } from "../services/carts.service.js";
-import { productsDao } from "../services/products.service.js";
+import MongoDBContainer from "../dao/mongoDB.dao.js";
+import cartsModel from "../models/carts.model.js";
+import productsModel from "../models/products.model.js";
+
+const productsDao = new MongoDBContainer(productsModel)
+const cartsDao = new MongoDBContainer(cartsModel)
 
 const viewProduct = async (req, res) => {
   let page = parseInt(req.query.page) || 1;
@@ -23,11 +27,6 @@ const viewRegister = async (req, res) => {
 }
 
 const viewLogin = async (req, res) => {
-  // let user = await req.session.user
-  // res.render('login', {
-  //   exists: (user) ? true : false,
-  //   user
-  // })
   let user = req.user
 
   if (user) { user = req.user.payload }
@@ -39,9 +38,7 @@ const viewLogin = async (req, res) => {
 }
 
 const viewLogout = async (req, res) => {
-  // req.session.destroy()
   res.cookie('loginToken', '', { maxAge: 1 }).redirect('/')
-
 }
 
 export {

@@ -1,49 +1,43 @@
 // Services
-import {
-  getCartService,
-  createCartService,
-  addProductinCartService,
-  deleteProductinCartService,
-  cleanCartService,
-  updateCartService,
-  updateProductinCartService
-} from "../services/carts.service.js"
+import CartServices from "../services/carts.service.js"
+
+const services = new CartServices()
 
 // Controllers
 
 const getCart = async (req, res) => {
-  let cart = await getCartService(req.params.cid)
+  let cart = await services.getCartService(req.params.cid)
   res.send(cart)
 }
 
 const createCart = async (req, res) => {
   let cart = { products: [] }
-  let result = await createCartService(cart)
+  let result = await services.createCartService(cart)
   res.send(result)
 }
 
 const addProductinCart = async (req, res) => {
-  let result = await addProductinCartService(req.params.cid, req.params.pid)
+  let result = await services.addProductinCartService(req.params.cid, req.params.pid)
   res.send(result)
 }
 
 const deleteProductinCart = async (req, res) => {
-  let result = await deleteProductinCartService(req.params.cid, req.params.pid)
+  let result = await services.deleteProductinCartService(req.params.cid, req.params.pid)
   res.send(result)
 }
 
 const cleanCart = async (req, res) => {
-  let result = await cleanCartService(req.params.cid)
+  let result = await services.cleanCartService(req.params.cid)
   res.send(result)
 }
 
 const updateCart = async (req, res) => {
-  let result = await updateCartService(req.params.cid, req.body)
+  let result = await services.updateCartService(req.params.cid, req.body)
   res.send(result)
 }
 
 const updateProductinCart = async (req, res) => {
-  let result = await updateProductinCartService(req.params.cid, req.params.pid, req.body)
+  let result = await services.updateProductinCartService(req.params.cid, req.params.pid, req.body)
   res.send(result)
 }
 
