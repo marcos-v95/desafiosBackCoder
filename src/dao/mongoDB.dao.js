@@ -21,13 +21,23 @@ export default class MongoDBContainer {
     } catch (error) { console.log(error) }
   }
 
-  async getDataByID(id) {
+  async getDataByID(id, pathPopulate) {
     try {
-      let result = await this.model.findOne({ _id: id }).populate('products.product')//Population with mongoose
-      return result;
+      let populate = pathPopulate || null
+      let data = await this.model.findOne({ _id: id }).populate(populate)//Population with mongoose
+      return data;
 
     } catch (error) { console.log(error) }
   }
+
+  async getDataByProp(filter) {
+    try {
+      let data = await this.model.findOne(filter)
+      return data
+
+    } catch (error) { console.log(error) }
+  }
+
   async saveData(document) {
     try {
       let result = await this.model.create(document)
@@ -35,6 +45,7 @@ export default class MongoDBContainer {
 
     } catch (error) { console.log(error) }
   }
+
   async updateData(id, newDocument) {
     try {
       let result = await this.model.updateOne({ _id: id }, { $set: newDocument })
@@ -42,6 +53,7 @@ export default class MongoDBContainer {
 
     } catch (error) { console.log(error) }
   }
+
   async deleteData(id) {
     try {
       let result = await this.model.deleteOne({ _id: id })

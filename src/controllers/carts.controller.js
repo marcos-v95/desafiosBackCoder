@@ -17,7 +17,7 @@ const createCart = async (req, res) => {
 }
 
 const addProductinCart = async (req, res) => {
-  let result = await services.addProductinCartService(req.params.cid, req.params.pid)
+  let result = await services.addProductinCartService(req.params.cid, req.params.pid, req.body)
   res.send(result)
 }
 
@@ -41,6 +41,11 @@ const updateProductinCart = async (req, res) => {
   res.send(result)
 }
 
+const checkOut = async (req, res) => {
+  let result = await services.checkOutService(req.params.cid, req.user)
+  res.send(result)
+}
+
 export {
   getCart,
   createCart,
@@ -48,5 +53,6 @@ export {
   deleteProductinCart,
   cleanCart,
   updateCart,
-  updateProductinCart
+  updateProductinCart,
+  checkOut
 }

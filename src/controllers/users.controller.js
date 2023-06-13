@@ -5,18 +5,21 @@ import UserServices from '../services/user.service.js'
 
 const services = new UserServices()
 
+// Dto
+import UserDto from '../dto/user.dto.js'
+
 // Controllers
 
 const userRegister = async (req, res) => {
-  let register = await services.userRegisterService(req.user)
+  let register = await services.getUserService(req.user)
 
-  res.send(register)
+  res.send({ status: 'success', message: 'Register ok' })
 }
 
 const userLogin = async (req, res) => {
-  let dataLogin = await services.userLoginService(req.user)
+  let payload = await services.getUserService(req.user)
 
-  let token = jwt.sign(dataLogin, 'loginKey', { expiresIn: '30m' })
+  let token = jwt.sign({ payload }, 'loginKey', { expiresIn: '30m' })
   res.cookie('loginToken', token, { httpOnly: true, maxAge: 50 * 60 * 1000 }).send({ message: 'login ok' })
 }
 
@@ -29,7 +32,7 @@ const githubCallback = async (req, res) => {
 }
 
 const userCurrent = (req, res) => {
-  res.send(req.user)
+  res.send(new UserDto(req.user.payload))
 }
 
 

@@ -14,11 +14,11 @@ export const isValidPassword = (user, password) => bcrypt.compareSync(password, 
 
 
 // Passport Authorization
-
 export const authorization = (role) => {
+
   return async (req, res, next) => {
     if (!req.user) return res.status(401).send({ status: 'error', message: 'Unauthorized' })
-    if (req.user.role != role) return res.status(401).send({ status: 'error', message: 'No permissions' })
+    if (req.user.payload.role != role) return res.status(401).send({ status: 'error', message: 'No permissions' })
     next()
   }
 }

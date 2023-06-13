@@ -1,19 +1,18 @@
-import MongoDBContainer from "../dao/mongoDB.dao.js";
-import usersModel from "../models/users.model.js";
 
+import UserRepository from "../repositories/usersRepository.js";
 
 export default class UserServices {
   constructor() {
-    this.dao = new MongoDBContainer(usersModel)
+    this.repository = new UserRepository()
   }
 
-  async userRegisterService(user) {
-
-    return { status: 'success', payload: user }
+  async getUserService(obj) {
+    let result = await this.repository.getUser(obj)
+    return result
   }
 
-  async userLoginService(user) {
-
-    return { status: 'success', payload: user }
+  async saveUserService(user) {
+    let result = await this.repository.saveUser(user)
+    return { status: 'success', payload: result }
   }
 }

@@ -1,6 +1,6 @@
 import express from "express";
 import handlebars from 'express-handlebars'
-import __dirname from './utils.js';
+import __dirname from './middlewares/utils.js';
 import config from "./config/dotenv.config.js";
 
 // Passport

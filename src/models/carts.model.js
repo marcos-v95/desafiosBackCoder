@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const cartsCollection = 'carts';
 
-const cartsModel = mongoose.Schema({
+const cartsSchema = mongoose.Schema({
   products: [{
     product: {
       type: mongoose.Schema.Types.ObjectId,
@@ -12,4 +12,4 @@ const cartsModel = mongoose.Schema({
   }]
 }, { timestamps: true })
 
-export default mongoose.model(cartsCollection, cartsModel)
+export default mongoose.model(cartsCollection, cartsSchema)

@@ -1,9 +1,9 @@
-import MongoDBContainer from "../dao/mongoDB.dao.js";
-import productsModel from "../models/products.model.js";
+import ProductsRepository from "../repositories/productsRepository.js"
+
 
 export default class ProductsServices {
   constructor() {
-    this.dao = new MongoDBContainer(productsModel)
+    this.repository = new ProductsRepository();
   }
 
   async getProductsService(limit, page, sort, category, status) {
@@ -15,7 +15,7 @@ export default class ProductsServices {
     }
     let query = (category || status) ? { $or: [{ category: category }, { status: status }] } : {}
 
-    let products = await this.dao.getData(query, options)
+    let products = await this.repository.getProducts(query, options)
     products.prevLink = products.hasPrevPage ? `http://localhost:8080/products?page=${products.prevPage}` : '';//link for views router
     products.nextLink = products.hasNextPage ? `http://localhost:8080/products?page=${products.nextPage}` : '';//link for views router
     products.isValid = !(page <= 0 || page > products.totalPages) //validate for views router
@@ -35,20 +35,21 @@ export default class ProductsServices {
     }
   }
 
-  async getProductbyIDService(pid) {
-    let product = await this.dao.getDataByID(pid)
+  async getProductbyIDService(id) {
+    let product = await this.repository.getProductByID(id)
     return product
   }
 
   async createProductService(newProduct) {
-    let data = await this.dao.getData()
+    let data = await this.repository.getProducts()
+
     const { title, description, code, price, stock, category } = newProduct
-    let pCode = data.payload.find(p => p.code == code)
+    let pCode = data.docs.find(p => p.code == code)
 
     if (pCode) { return console.log('Error: Product with repeated code') }
 
     if (title && description && code && price && stock && category) {
-      let response = await this.dao.saveData(newProduct)
+      let response = await this.repository.createProduct(newProduct)
       return response
     } else {
       return console.log('Error: Missing enter fields')
@@ -56,12 +57,12 @@ export default class ProductsServices {
   }
 
   async updateProductService(pid, newProduct) {
-    let response = await this.dao.updateData(pid, newProduct)
+    let response = await this.repository.updateProduct(pid, newProduct)
     return response
   }
 
   async deleteProductService(pid) {
-    let response = await this.dao.deleteData(pid)
+    let response = await this.repository.deleteProduct(pid)
     return response
   }
 }

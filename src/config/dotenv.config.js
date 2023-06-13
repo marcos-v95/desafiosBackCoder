@@ -5,7 +5,8 @@ dotenv.config()
 const config = {
   PORT: process.env.PORT,
   MONGO_URL: process.env.MONGODB_URL,
-  NODE_ENV: process.env.NODE_ENV
+  DAO: process.env.DAO,
+  cartPopulate: process.env.cartPopulate
 }
 
 export default config

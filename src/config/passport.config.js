@@ -3,7 +3,7 @@ import local from "passport-local"
 import githubStrategy from "passport-github2"
 import jwt from 'passport-jwt'
 
-import { createHash, isValidPassword } from "../utils.js";
+import { createHash, isValidPassword } from "../middlewares/utils.js";
 
 import UserServices from "../services/user.service.js";
 const services = new UserServices()
@@ -18,10 +18,10 @@ const initializePassport = () => {
       let user = { first_name, last_name, email, age, password: createHash(password) }
       if (email == 'adminCoder@coder.com' && password == 'adminCoder123') user.role = 'admin'
 
-      let exist = await services.dao.model.findOne({ email: email })
+      let exist = await services.getUserService({ email: email })
       if (exist) return done(null, false, { status: 'error', message: 'The user is already registered' })
 
-      let result = await services.dao.saveData(user)
+      let result = await services.saveUserService(user)
       return done(null, result)
 
     } catch (error) {
@@ -30,7 +30,7 @@ const initializePassport = () => {
   }))
 
   passport.use('login', new local.Strategy({ usernameField: 'email' }, async (email, password, done) => {
-    let user = await services.dao.model.findOne({ email: email })
+    let user = await await services.getUserService({ email: email })
 
     try {
       if (!email || !password) return done(null, false, { status: 'error', message: 'All fields are required' })
