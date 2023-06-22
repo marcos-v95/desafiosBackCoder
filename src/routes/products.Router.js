@@ -1,9 +1,11 @@
 import { Router } from "express";
 import passport from "passport"
 import { authorization } from "../middlewares/utils.js";
+
 // Controllers
 import {
   getProducts,
+  generateMock,
   getProductbyID,
   createProduct,
   updateProduct,
@@ -14,6 +16,8 @@ import {
 const router = Router();
 
 router.get('/', getProducts)
+
+router.get('/mockingproducts', generateMock)
 
 router.get('/:pid', getProductbyID)
 

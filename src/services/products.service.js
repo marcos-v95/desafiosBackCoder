@@ -1,5 +1,10 @@
 import ProductsRepository from "../repositories/productsRepository.js"
 
+// Error Handler
+// import CustomError from "./errors/Custom.error.js";
+// import EnumErrors from "./errors/enums.js";
+// import { createProductErrorInfo } from "./errors/info.js";
+
 
 export default class ProductsServices {
   constructor() {
@@ -41,18 +46,25 @@ export default class ProductsServices {
   }
 
   async createProductService(newProduct) {
+    const { title, description, code, price, stock, category } = newProduct
     let data = await this.repository.getProducts()
 
-    const { title, description, code, price, stock, category } = newProduct
     let pCode = data.docs.find(p => p.code == code)
 
     if (pCode) { return console.log('Error: Product with repeated code') }
 
-    if (title && description && code && price && stock && category) {
+    if (!title || !description || !code || !price || !stock || !category) {
+      return console.log('Missing enter fields')
+
+      // return CustomError.createError({
+      //   name: "Product creation error",
+      //   cause: createProductErrorInfo(newProduct),
+      //   message: "Error trying to create product",
+      //   code: EnumErrors.INVALID_TYPES_ERROR
+      // })
+    } else {
       let response = await this.repository.createProduct(newProduct)
       return response
-    } else {
-      return console.log('Error: Missing enter fields')
     }
   }
 

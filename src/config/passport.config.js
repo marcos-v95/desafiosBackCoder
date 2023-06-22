@@ -1,19 +1,32 @@
+// Passport
 import passport from "passport";
 import local from "passport-local"
 import githubStrategy from "passport-github2"
 import jwt from 'passport-jwt'
 
+// Errors Handler
+import CustomError from "../services/errors/Custom.error.js";
+import EnumErrors from "../services/errors/enums.js";
+import { generateUserErrorInfo } from "../services/errors/info.js";
+
+// Bcrypt
 import { createHash, isValidPassword } from "../middlewares/utils.js";
 
+// Services
 import UserServices from "../services/user.service.js";
-const services = new UserServices()
 
+const services = new UserServices()
 
 const initializePassport = () => {
   passport.use('register', new local.Strategy({ passReqToCallback: true, usernameField: 'email' }, async (req, email, password, done) => {
     try {
       const { first_name, last_name, age } = req.body;
-      if (!first_name || !last_name || !email || !age || !password) return done(null, false, { status: 'error', message: 'All fields are required' })
+      if (!first_name || !last_name || !email || !age || !password) return done(null, false, CustomError.createError({
+        name: 'User creation error',
+        cause: generateUserErrorInfo({ first_name, last_name, email, password }),
+        message: 'Error trying to create user',
+        code: EnumErrors.INVALID_TYPES_ERROR
+      }))
 
       let user = { first_name, last_name, email, age, password: createHash(password) }
       if (email == 'adminCoder@coder.com' && password == 'adminCoder123') user.role = 'admin'

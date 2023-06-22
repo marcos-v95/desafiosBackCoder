@@ -1,14 +1,21 @@
 // Services
 import ProductsServices from "../services/products.service.js"
 
-const services = new ProductsServices()
-
 // Controllers
+
+const services = new ProductsServices()
 
 const getProducts = async (req, res) => {
   let products = await services.getProductsService(req.query.limit, req.query.page, req.query.sort, req.query.category, req.query.status)
 
   res.send(products)
+}
+
+const generateMock = async (req, res) => {
+  let { generateProducts } = await import('../middlewares/mock.js')
+  let result = generateProducts(100)
+
+  res.send({ status: 'success', payload: result })
 }
 
 const getProductbyID = async (req, res) => {
@@ -35,10 +42,13 @@ const deleteProduct = async (req, res) => {
   res.send(result)
 }
 
+
 export {
   getProducts,
+  generateMock,
   getProductbyID,
   createProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+
 }
