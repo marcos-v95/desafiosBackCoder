@@ -1,3 +1,6 @@
+// Services
+import UserServices from "../services/user.service.js";
+
 // Passport
 import passport from "passport";
 import local from "passport-local"
@@ -5,15 +8,13 @@ import githubStrategy from "passport-github2"
 import jwt from 'passport-jwt'
 
 // Errors Handler
-import CustomError from "../services/errors/Custom.error.js";
+import CustomError from "../services/errors/custom.error.js";
 import EnumErrors from "../services/errors/enums.js";
 import { generateUserErrorInfo } from "../services/errors/info.js";
 
 // Bcrypt
-import { createHash, isValidPassword } from "../middlewares/utils.js";
+import { createHash, isValidPassword } from "../utils/utils.js";
 
-// Services
-import UserServices from "../services/user.service.js";
 
 const services = new UserServices()
 

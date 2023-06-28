@@ -7,11 +7,13 @@ import {
   userLogin,
   userLoginGithub,
   githubCallback,
-  userCurrent
+  userCurrent,
+  userMock
 } from "../controllers/users.controller.js"
 
 const router = Router();
 
+router.get('/mockingUser', userMock)
 
 router.post('/register', passport.authenticate('register', { session: false }), userRegister)
 

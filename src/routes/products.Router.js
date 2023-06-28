@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport"
-import { authorization } from "../middlewares/utils.js";
+import { authorization } from "../utils/utils.js";
 
 // Controllers
 import {

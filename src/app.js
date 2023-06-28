@@ -1,6 +1,6 @@
 import express from "express";
 import handlebars from 'express-handlebars'
-import __dirname from './middlewares/utils.js';
+import __dirname from './middlewares/_dirname.js';
 import config from "./config/dotenv.config.js";
 import cors from 'cors'
 
@@ -9,7 +9,7 @@ import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 
 // Cookies
-import cookieParser from "cookie-parser";
+import cookieParser from 'cookie-parser'
 
 // Routes
 import productsRouter from './routes/products.router.js'

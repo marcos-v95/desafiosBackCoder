@@ -1,9 +1,12 @@
 import ProductsRepository from "../repositories/productsRepository.js"
 
+// Logger
+import logger from "../utils/logger.js";
+
 // Error Handler
-// import CustomError from "./errors/Custom.error.js";
-// import EnumErrors from "./errors/enums.js";
-// import { createProductErrorInfo } from "./errors/info.js";
+import CustomError from "./errors/custom.error.js";
+import EnumErrors from "./errors/enums.js";
+import { createProductErrorInfo } from "./errors/info.js";
 
 
 export default class ProductsServices {
@@ -54,16 +57,16 @@ export default class ProductsServices {
     if (pCode) { return console.log('Error: Product with repeated code') }
 
     if (!title || !description || !code || !price || !stock || !category) {
-      return console.log('Missing enter fields')
-
-      // return CustomError.createError({
-      //   name: "Product creation error",
-      //   cause: createProductErrorInfo(newProduct),
-      //   message: "Error trying to create product",
-      //   code: EnumErrors.INVALID_TYPES_ERROR
-      // })
+      return CustomError.createError({
+        name: "Product creation error",
+        cause: createProductErrorInfo({ title, description, code, price, stock, category }),
+        message: "Error trying to create product",
+        code: EnumErrors.INVALID_TYPES_ERROR
+      })
     } else {
       let response = await this.repository.createProduct(newProduct)
+      logger.info(`[New product created] at --${response.createdAt}--`)
+
       return response
     }
   }

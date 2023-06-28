@@ -1,6 +1,6 @@
 // Services
 import ProductsServices from "../services/products.service.js"
-
+// import { logger } from "../utils/logger.js"
 // Controllers
 
 const services = new ProductsServices()
@@ -12,8 +12,8 @@ const getProducts = async (req, res) => {
 }
 
 const generateMock = async (req, res) => {
-  let { generateProducts } = await import('../middlewares/mock.js')
-  let result = generateProducts(100)
+  let { mockGenerator } = await import('../utils/utils.js')
+  let result = mockGenerator(100, 'products')
 
   res.send({ status: 'success', payload: result })
 }
@@ -24,10 +24,14 @@ const getProductbyID = async (req, res) => {
   res.send(product)
 }
 
-const createProduct = async (req, res) => {
-  let result = await services.createProductService(req.body)
+const createProduct = async (req, res, next) => {
+  try {
+    let result = await services.createProductService(req.body)
+    res.send(result)
 
-  res.send(result)
+  } catch (error) {
+    next(error)
+  }
 }
 
 const updateProduct = async (req, res) => {
