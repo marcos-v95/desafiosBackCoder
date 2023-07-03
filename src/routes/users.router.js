@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import { authorization } from "../utils/utils.js";
 
 // Controllers
 import {
@@ -8,7 +9,10 @@ import {
   userLoginGithub,
   githubCallback,
   userCurrent,
-  userMock
+  userMock,
+  recoveryPassword,
+  resetPassword,
+  userChangeRole
 } from "../controllers/users.controller.js"
 
 const router = Router();
@@ -24,5 +28,11 @@ router.get('/github', passport.authenticate('github', { scope: ['user:email'] })
 router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/' }), githubCallback)
 
 router.get('/current', passport.authenticate('jwt', { session: false }), userCurrent)
+
+router.put('/recoveryPassword', recoveryPassword)
+
+router.put('/resetPassword/:token', resetPassword)
+
+router.post('/premium/:uid', passport.authenticate('jwt', { session: false }), authorization(['admin']), userChangeRole)
 
 export default router 

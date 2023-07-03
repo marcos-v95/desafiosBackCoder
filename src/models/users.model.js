@@ -10,6 +10,7 @@ const usersSchema = mongoose.Schema({
   cart: { type: mongoose.Schema.Types.ObjectId, ref: 'carts' },
   password: { type: String, required: true },
   role: { type: String, default: 'user' },
+  resetPassword: { type: String }
 }, { timestamps: true })
 
 export default mongoose.model(usersCollection, usersSchema)

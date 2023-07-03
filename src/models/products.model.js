@@ -11,7 +11,8 @@ const productsSchema = mongoose.Schema({
   stock: { type: Number, required: true, max: 50 },
   category: { type: String, required: true, max: 50 },
   thumbnail: { type: Array },
-  status: { type: Boolean, default: true }
+  status: { type: Boolean, default: true },
+  owner: { type: String, default: "admin" }
 }, { timestamps: true })
 
 // Mongoose Pagination

@@ -20,7 +20,7 @@ router.get('/:cid', getCart)
 
 router.post('/', createCart)
 
-router.post('/:cid/products/:pid', passport.authenticate('jwt', { session: false }), authorization('user'), addProductinCart)
+router.post('/:cid/products/:pid', passport.authenticate('jwt', { session: false }), authorization(['user', 'premium']), addProductinCart)
 
 router.delete('/:cid/products/:pid', deleteProductinCart)
 
@@ -30,6 +30,6 @@ router.put('/:cid', updateCart)
 
 router.put('/:cid/products/:pid', updateProductinCart)
 
-router.post('/:cid/purchase', passport.authenticate('jwt', { session: false }), authorization('user'), checkOut)
+router.post('/:cid/purchase', passport.authenticate('jwt', { session: false }), authorization(['user']), checkOut)
 
 export default router

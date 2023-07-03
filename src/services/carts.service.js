@@ -2,6 +2,8 @@ import CartsRepository from "../repositories/cartsRepository.js"
 import TicketRepository from "../repositories/ticketsRepository.js"
 import config from "../config/dotenv.config.js"
 
+import ProductsServices from "./products.service.js";
+
 
 export default class CartServices {
   constructor() {
@@ -26,10 +28,14 @@ export default class CartServices {
     return response
   }
 
-  async addProductinCartService(cid, pid, body) {
-    let cart = await this.repository.getCart(cid)
-    let quantity = (body.quantity) ? body.quantity : 1
+  async addProductinCartService(cid, pid, quantity, user) {
+    let cart = await this.repository.getCart(cid, config.cartPopulate)
+    let product = await new ProductsServices().getProductbyIDService(pid)
     let pindex = cart.products.findIndex((e) => e.product == pid)
+
+    if (product.owner == user.email) {
+      return { status: 'error', message: "you can't add products that you've created yourself" }
+    }
 
     if (pindex == -1) {
       cart.products.push({ product: pid, quantity: quantity })

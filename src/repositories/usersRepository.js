@@ -14,6 +14,10 @@ class UserRepository {
   async saveUser(user) {
     return await this.dao.saveData(user)
   }
+
+  async updateUser(id, user) {
+    return await this.dao.updateData(id, user)
+  }
 }
 
 export default UserRepository

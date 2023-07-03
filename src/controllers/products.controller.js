@@ -24,14 +24,11 @@ const getProductbyID = async (req, res) => {
   res.send(product)
 }
 
-const createProduct = async (req, res, next) => {
-  try {
-    let result = await services.createProductService(req.body)
-    res.send(result)
+const createProduct = async (req, res) => {
+  let userOwner = req.user.payload.email
+  let result = await services.createProductService(req.body, userOwner)
 
-  } catch (error) {
-    next(error)
-  }
+  res.send(result)
 }
 
 const updateProduct = async (req, res) => {
@@ -41,7 +38,8 @@ const updateProduct = async (req, res) => {
 }
 
 const deleteProduct = async (req, res) => {
-  let result = await services.deleteProductService(req.params.pid)
+  let user = req.user.payload
+  let result = await services.deleteProductService(req.params.pid, user)
 
   res.send(result)
 }

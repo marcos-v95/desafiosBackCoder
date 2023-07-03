@@ -7,10 +7,13 @@ export const createHash = (password) => bcrypt.hashSync(password, bcrypt.genSalt
 export const isValidPassword = (user, password) => bcrypt.compareSync(password, user.password)
 
 // Passport Authorization
-export const authorization = (role) => {
+export const authorization = (array) => {
   return async (req, res, next) => {
+    let role = array.find((e) => e == req.user.payload.role)
+
     if (!req.user) return res.status(401).send({ status: 'error', message: 'Unauthorized' })
     if (req.user.payload.role != role) return res.status(401).send({ status: 'error', message: 'No permissions' })
+
     next()
   }
 }

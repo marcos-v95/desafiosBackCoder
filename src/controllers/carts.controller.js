@@ -17,7 +17,11 @@ const createCart = async (req, res) => {
 }
 
 const addProductinCart = async (req, res) => {
-  let result = await services.addProductinCartService(req.params.cid, req.params.pid, req.body)
+  let { quantity } = req.body
+  if (!quantity) quantity = 1
+  let user = req.user.payload
+
+  let result = await services.addProductinCartService(req.params.cid, req.params.pid, quantity, user)
   res.send(result)
 }
 

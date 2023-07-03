@@ -1,8 +1,6 @@
 import ProductsRepository from "../repositories/productsRepository.js"
-
 // Logger
 import logger from "../utils/logger.js";
-
 // Error Handler
 import CustomError from "./errors/custom.error.js";
 import EnumErrors from "./errors/enums.js";
@@ -48,8 +46,8 @@ export default class ProductsServices {
     return product
   }
 
-  async createProductService(newProduct) {
-    const { title, description, code, price, stock, category } = newProduct
+  async createProductService(product, owner) {
+    const { title, description, code, price, stock, category } = product
     let data = await this.repository.getProducts()
 
     let pCode = data.docs.find(p => p.code == code)
@@ -64,7 +62,8 @@ export default class ProductsServices {
         code: EnumErrors.INVALID_TYPES_ERROR
       })
     } else {
-      let response = await this.repository.createProduct(newProduct)
+      product.owner = owner
+      let response = await this.repository.createProduct(product)
       logger.info(`[New product created] at --${response.createdAt}--`)
 
       return response
@@ -76,8 +75,17 @@ export default class ProductsServices {
     return response
   }
 
-  async deleteProductService(pid) {
-    let response = await this.repository.deleteProduct(pid)
-    return response
+  async deleteProductService(pid, user) {
+    let product = await this.repository.getProductByID(pid)
+
+    if (user.role == "premium" && user.email == product.owner) {
+      return await this.repository.deleteProduct({ _id: pid, owner: product.owner })
+
+    } else if (user.role == 'admin') {
+      return await this.repository.deleteProduct({ _id: pid })
+
+    } else {
+      return { status: 'error', message: 'You do not have permission to delete this product' }
+    }
   }
 }
