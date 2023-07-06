@@ -31,7 +31,7 @@ export default class MongoDBContainer {
       return data;
 
     } catch (error) {
-      logger.info(`Error getting data from database ${error}`)
+      logger.info(`Error getting data from database || ${error}`)
     }
   }
 

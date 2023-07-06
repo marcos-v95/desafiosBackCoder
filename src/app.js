@@ -1,6 +1,6 @@
 import express from "express";
 import handlebars from 'express-handlebars'
-import __dirname from './middlewares/_dirname.js';
+import __dirname from './_dirname.js';
 import config from "./config/dotenv.config.js";
 import cors from 'cors'
 
@@ -20,9 +20,16 @@ import viewsRouter from './routes/views.router.js'
 // Errors handler
 import ErrorHandler from './middlewares/errors.js'
 
+// Swagger
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
+import { swOptions } from "./utils/utils.js";
+
 // Server
 const app = express()
-const server = app.listen(config.PORT, () => { console.log(`Server running on PORT: ${server.address().port}`) })
+const server = app.listen(config.PORT, () => {
+  console.log(`Server running on PORT: ${server.address().port}`)
+})
 server.on('error', (error) => console.log(error))
 
 // Express config
@@ -39,6 +46,10 @@ app.use(passport.initialize())
 
 // Cookies
 app.use(cookieParser('secretKey'))
+
+// Swagger
+const specs = swaggerJSDoc(swOptions);
+app.use('/api/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 // Routes 
 app.use('/api/products', productsRouter)

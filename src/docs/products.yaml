@@ -1,0 +1,179 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron obtenidos correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        "500":
+          description: Error interno
+    post:
+      summary: Crea un producto nuevo
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/productInput'
+      responses:
+        "200":
+          description: Producto creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Products'
+        "500":
+          description: Error interno
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto e base a un id recibido
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id del producto a buscar
+        schema:
+          $type: String
+      responses:
+        "200":
+          description: Producto encontrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Products'
+        "500":
+          description: Error interno
+    put:
+      summary: Actualiza un producto por su id
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id del producto a actualizar
+        schema:
+          $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/productInput'
+      responses:
+        '200':
+          description: Producto actualizado correctamente
+        '401':
+          description: Authorization information is missing or invalid.
+    delete:
+      summary: Elimina un producto por su id
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto a eliminar
+        schema:
+          $type: String
+      responses:
+        '200':
+          description: Producto eliminado correctamente
+        '401':
+          description: Authorization information is missing or invalid.
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autegenerado de mongo
+        title:
+          type: String
+          description: Name of product
+        description:
+          type: String
+          description: Descripcion del producto
+        code:
+          type: String
+          description: Codigo de producto autogenerado
+        price:
+          type: Number
+          description: Precio del producto
+        stock:
+          type: Number
+          description: Cantidad disponible del producto
+        category:
+          type: String
+          description: Categoria generica a la cual pertenece el producto
+        thumbnail:
+          type: Array
+          description: Url de imagenes o archivos relacionados al producto
+        status:
+          type: Boolean
+          description: Estado del producto, es proporcionado por el server por defecto en true
+        owner:
+          type: String
+          description: Usuario que creo el producto (puede ser admin o premium), es proporcionado por el server
+      example:
+        _id: "ObjectId('649e20677034bf03673f9c78')"
+        title: "Remera"
+        description: "Remera 100% algodon"
+        code: "1234"
+        price: 2000
+        stock: 10
+        category: 'shirts'
+        thumbnail: ['https://ar.pinterest.com/pin/1145532855346459735/']
+        status: true
+        owner: "'admin' || 'userpremium@email.com'"
+  requestBodies:
+    productInput:
+      type: Object
+      properties:
+        title:
+          type: String
+          description: Name of product
+        description:
+          type: String
+          description: Descripcion del producto
+        code:
+          type: String
+          description: Codigo de producto autogenerado
+        price:
+          type: Number
+          description: Precio del producto
+        stock:
+          type: Number
+          description: Cantidad disponible del producto
+        category:
+          type: String
+          description: Categoria generica a la cual pertenece el producto
+        thumbnail:
+          type: Array
+          description: Url de imagenes o archivos relacionados al producto
+        status:
+          type: Boolean
+          description: Estado del producto
+      example:
+        title: "Camisa"
+        description: "Remera 100% algodon"
+        code: "3456"
+        price: 3000
+        stock: 30
+        category: 'shirts'
+        thumbnail: ['https://ar.pinterest.com/pin/1145532855346459735/']
+        status: true

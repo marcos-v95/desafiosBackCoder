@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Faker, en } from '@faker-js/faker';
-
+import __dirname from '../_dirname.js';
 
 // Bcrypt 
 export const createHash = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(10))
@@ -64,4 +64,15 @@ export const mockGenerator = (mockQuantity, mockType) => {
   }
 }
 
+// Swagger options
+export const swOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Titulo de documentacion de api',
+      description: 'descripcion de api'
+    }
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`]
+}
 

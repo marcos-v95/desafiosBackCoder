@@ -24,11 +24,15 @@ const getProductbyID = async (req, res) => {
   res.send(product)
 }
 
-const createProduct = async (req, res) => {
-  let userOwner = req.user.payload.email
-  let result = await services.createProductService(req.body, userOwner)
+const createProduct = async (req, res, next) => {
+  try {
+    let userOwner = req.user.payload.email
+    let result = await services.createProductService(req.body, userOwner)
+    res.send(result)
+  } catch (error) {
+    next(error)
+  }
 
-  res.send(result)
 }
 
 const updateProduct = async (req, res) => {

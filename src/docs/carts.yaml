@@ -1,0 +1,109 @@
+paths:
+  /api/carts:
+    post:
+      summary: Crea un carrito nuevo
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Carrito creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Carts'
+        "500":
+          description: Error interno
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene un carrito e base a un id recibido
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: id del carrito a buscar
+        schema:
+          $type: String
+      responses:
+        "200":
+          description: Carrito encontrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Carts'
+        "500":
+          description: Error interno
+    delete:
+      summary: Elimina un carrito por su id
+      tags:
+        - Carts
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Id del carrito a eliminar
+        schema:
+          $type: String
+      responses:
+        '200':
+          description: Carrito eliminado correctamente
+        '401':
+          description: Authorization information is missing or invalid.
+    put:
+      summary: Actualiza un carrito por su id
+      tags:
+        - Carts
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id del carrito a actualizar
+        schema:
+          $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/productQuantity'
+      responses:
+        '200':
+          description: Carrito actualizado correctamente
+        '401':
+          description: Authorization information is missing or invalid.
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autegenerado de mongo
+        products:
+          type: Array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                description: id del producto a agregar
+              quantity:
+                type: number
+                description: cantidad del producto agregado 
+      example:
+        _id: "ObjectId('649e20677034bf03673f9c78')"
+        products: [{
+          product: "ObjectId('649e20677034bf03673f9c78')",
+          quantity: 2
+        }]
+  requestBodies:
+    productQuantity:
+      type: Object
+      properties:
+        quantity:
+          type: String
+          description: Quantity of product
+      example:
+        quantity: 3
+          

@@ -23,9 +23,9 @@ router.get('/:pid', getProductbyID)
 
 router.post('/', passport.authenticate('jwt', { session: false }), authorization(['admin', 'premium']), createProduct)
 
-router.put('/:pid', passport.authenticate('jwt', { session: false }), authorization('admin'), updateProduct)
+router.put('/:pid', passport.authenticate('jwt', { session: false }), authorization(['admin']), updateProduct)
 
 router.delete('/:pid', passport.authenticate('jwt', { session: false }), authorization(['admin', 'premium']), deleteProduct)
 
 
-export default router
+export default router  

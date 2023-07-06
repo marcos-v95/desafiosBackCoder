@@ -1,3 +1,4 @@
+import { ne } from "@faker-js/faker";
 import ProductsRepository from "../repositories/productsRepository.js"
 // Logger
 import logger from "../utils/logger.js";
@@ -52,7 +53,7 @@ export default class ProductsServices {
 
     let pCode = data.docs.find(p => p.code == code)
 
-    if (pCode) { return console.log('Error: Product with repeated code') }
+    if (pCode) return { status: 'Error', message: 'Product with repeated code' }
 
     if (!title || !description || !code || !price || !stock || !category) {
       return CustomError.createError({
