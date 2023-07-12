@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/users.test.js --timeout 10000",
     "start": "node src/app.js",
     "dev": "nodemon src/app.js"
   },
@@ -44,6 +44,9 @@
     "winston": "^3.9.0"
   },
   "devDependencies": {
-    "artillery": "^2.0.0-34"
+    "artillery": "^2.0.0-34",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }

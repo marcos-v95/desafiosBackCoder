@@ -1,6 +1,6 @@
 // Services
 import ProductsServices from "../services/products.service.js"
-// import { logger } from "../utils/logger.js"
+
 // Controllers
 
 const services = new ProductsServices()
@@ -28,7 +28,7 @@ const createProduct = async (req, res, next) => {
   try {
     let userOwner = req.user.payload.email
     let result = await services.createProductService(req.body, userOwner)
-    res.send(result)
+    res.send({ status: 'success', payload: result })
   } catch (error) {
     next(error)
   }
