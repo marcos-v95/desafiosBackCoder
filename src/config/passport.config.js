@@ -44,7 +44,7 @@ const initializePassport = () => {
   }))
 
   passport.use('login', new local.Strategy({ usernameField: 'email' }, async (email, password, done) => {
-    let user = await await services.getUserService({ email: email })
+    let user = await services.getUserService({ email: email })
 
     try {
       if (!email || !password) return done(null, false, { status: 'error', message: 'All fields are required' })

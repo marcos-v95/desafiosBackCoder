@@ -1,44 +1,70 @@
-import MongoDBContainer from "../dao/mongoDB.dao.js";
-import cartsModel from "../models/carts.model.js";
-import productsModel from "../models/products.model.js";
+import ProductsServices from "../services/products.service.js"
 
-const productsDao = new MongoDBContainer(productsModel)
-const cartsDao = new MongoDBContainer(cartsModel)
+const pServices = new ProductsServices()
 
-const viewProduct = async (req, res) => {
-  let page = parseInt(req.query.page) || 1;
-  let data = await productsDao.getData(1, page)
-  res.render('products', data)
+const viewProduct = async (req, res, next) => {
+  try {
+    let data = await pServices.getProductsService(6)
+
+    res.render('products', data)
+
+  } catch (error) {
+    next(error)
+  }
 }
 
-const viewCart = async (req, res) => {
-  let data = await cartsDao.getDataByID(req.params.cid)
-  res.render('carts', data)
+const viewCart = async (req, res, next) => {
+  try {
+    let data = await cartsDao.getDataByID(req.params.cid)
+
+    res.render('carts', data)
+
+  } catch (error) {
+    next(error)
+  }
 }
 
-const viewHome = async (req, res) => {
+const viewHome = async (req, res, next) => {
+  try {
+    res.render('home', {})
 
-  res.render('home', {})
+  } catch (error) {
+    next(error)
+  }
 }
 
-const viewRegister = async (req, res) => {
+const viewRegister = async (req, res, next) => {
+  try {
+    res.render('register', {})
 
-  res.render('register', {})
+  } catch (error) {
+    next(error)
+  }
 }
 
-const viewLogin = async (req, res) => {
-  let user = req.user
+const viewLogin = async (req, res, next) => {
+  try {
+    let user = req.user
 
-  if (user) { user = req.user.payload }
+    if (user) { user = req.user.payload }
 
-  res.render('login', {
-    exists: (user) ? true : false,
-    user
-  })
+    res.render('login', {
+      exists: (user) ? true : false,
+      user
+    })
+
+  } catch (error) {
+    next(error)
+  }
 }
 
-const viewLogout = async (req, res) => {
-  res.cookie('loginToken', '', { maxAge: 1 }).redirect('/')
+const viewLogout = async (req, res, next) => {
+  try {
+    res.cookie('loginToken', '', { maxAge: 1 }).redirect('/')
+
+  } catch (error) {
+    next(error)
+  }
 }
 
 export {

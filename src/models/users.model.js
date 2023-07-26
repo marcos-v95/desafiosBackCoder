@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from 'mongoose-paginate-v2'
 
 const usersCollection = 'users';
 
@@ -12,5 +13,8 @@ const usersSchema = mongoose.Schema({
   role: { type: String, default: 'user' },
   resetPassword: { type: String }
 }, { timestamps: true })
+
+// Mongoose Pagination
+usersSchema.plugin(mongoosePaginate)
 
 export default mongoose.model(usersCollection, usersSchema)

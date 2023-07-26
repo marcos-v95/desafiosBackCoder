@@ -6,46 +6,72 @@ import ProductsServices from "../services/products.service.js"
 const services = new ProductsServices()
 
 const getProducts = async (req, res) => {
-  let products = await services.getProductsService(req.query.limit, req.query.page, req.query.sort, req.query.category, req.query.status)
+  try {
+    let products = await services.getProductsService(req.query.limit, req.query.page, req.query.sort, req.query.category, req.query.status)
 
-  res.send(products)
+    res.send(products)
+
+  } catch (error) {
+    next(error)
+  }
 }
 
 const generateMock = async (req, res) => {
-  let { mockGenerator } = await import('../utils/utils.js')
-  let result = mockGenerator(100, 'products')
+  try {
+    let { mockGenerator } = await import('../utils/utils.js')
+    let result = mockGenerator(100, 'products')
 
-  res.send({ status: 'success', payload: result })
+    res.send({ status: 'success', payload: result })
+
+  } catch (error) {
+    next(error)
+  }
 }
 
 const getProductbyID = async (req, res) => {
-  let product = await services.getProductbyIDService(req.params.pid)
+  try {
+    let product = await services.getProductbyIDService(req.params.pid)
 
-  res.send(product)
+    res.send(product)
+
+  } catch (error) {
+    next(error)
+  }
 }
 
 const createProduct = async (req, res, next) => {
   try {
     let userOwner = req.user.payload.email
     let result = await services.createProductService(req.body, userOwner)
+
     res.send({ status: 'success', payload: result })
+
   } catch (error) {
     next(error)
   }
-
 }
 
 const updateProduct = async (req, res) => {
-  let result = await services.updateProductService(req.params.pid, req.body)
+  try {
+    let result = await services.updateProductService(req.params.pid, req.body)
 
-  res.send(result)
+    res.send(result)
+
+  } catch (error) {
+    next(error)
+  }
 }
 
 const deleteProduct = async (req, res) => {
-  let user = req.user.payload
-  let result = await services.deleteProductService(req.params.pid, user)
+  try {
+    let user = req.user.payload
+    let result = await services.deleteProductService(req.params.pid, user)
 
-  res.send(result)
+    res.send(result)
+
+  } catch (error) {
+    next(error)
+  }
 }
 
 

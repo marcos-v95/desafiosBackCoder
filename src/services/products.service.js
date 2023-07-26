@@ -1,4 +1,3 @@
-import { ne } from "@faker-js/faker";
 import ProductsRepository from "../repositories/productsRepository.js"
 // Logger
 import logger from "../utils/logger.js";

@@ -7,6 +7,10 @@ class UserRepository {
     this.dao = DaosFactory.createUsers(config.DAO)
   }
 
+  async getData(query, options) {
+    return await this.dao.getData(query, options)
+  }
+
   async getUser(obj) {
     return await this.dao.getDataByProp(obj)
   }

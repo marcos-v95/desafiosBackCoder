@@ -1,1 +1,10 @@
 
+{"level":"info","message":"Error getting data from database TypeError: this.model.paginate is not a function","timestamp":"2023-07-20T15:25:17.392Z"}
+{"level":"info","message":"Error getting data from database TypeError: this.model.paginate is not a function","timestamp":"2023-07-23T23:59:41.152Z"}
+{"level":"info","message":"Error getting data from database TypeError: this.model.paginate is not a function","timestamp":"2023-07-24T00:31:35.134Z"}
+{"level":"info","message":"Error getting data from database TypeError: this.model.paginate is not a function","timestamp":"2023-07-24T01:24:25.706Z"}
+{"level":"info","message":"Error getting data from database TypeError: this.model.paginate is not a function","timestamp":"2023-07-24T01:25:57.678Z"}
+{"level":"info","message":"User successfully logged in","timestamp":"2023-07-24T02:09:16.323Z"}
+{"level":"info","message":"User successfully logged in","timestamp":"2023-07-25T01:24:02.762Z"}
+{"level":"info","message":"User successfully logged in","timestamp":"2023-07-25T01:54:48.983Z"}
+{"level":"info","message":"User successfully logged in","timestamp":"2023-07-25T03:04:13.317Z"}
